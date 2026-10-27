@@ -126,6 +126,18 @@ results in advance; evaluation and optimisation duration varies.
 3. Run the optimiser, inspect candidate instructions and tool descriptions, and run the fact check.
 4. Prepare a distinct reviewed candidate and baseline for Demo 6. The current pair is identical.
    Keep the bad-prompt PR unmerged and verify actual gate and branch-rule behaviour.
+
+   Demo 6 checklist, only after cloud execution is separately authorised:
+
+   - [ ] Before opening the Demo 6 PR, confirm the repository variable
+     `ENABLE_CLOUD_DEMOS` is set to `true`.
+   - [ ] Match the main ruleset's required-check names to the names shown on the actual PR.
+     Check whether the reusable workflow adds `/ evaluate`; do not assume the YAML job name
+     alone is the required-check name.
+   - [ ] On the bad-prompt PR, confirm the development-set check
+     (`2. Development set vs baseline`, including its actual suffix) concludes `failure`,
+     not `skipped`, and that the required check blocks merging before recording the demo.
+
 5. Rehearse the Demo 2 questions and save real screenshots or recordings as backups.
 6. Prepare tabs for model comparison, the agent, evaluation, optimisation and GitHub Actions.
    Identify saved results as pre-run and keep credentials and private data out of shared screens.

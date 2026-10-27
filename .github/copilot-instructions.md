@@ -126,8 +126,8 @@ evaluation is unsupported. Do not restart that migration without a request.
 ## Change and execution discipline
 
 Work within the user’s authorised scope and preserve unrelated edits. Do not commit or push
-unless asked. Use `hyeonsangjeon` for authorised GitHub commits/pushes; do not put "Codex" in
-PR titles or bodies. Keep comments and documentation concise.
+unless asked. Use `hyeonsangjeon` for authorised GitHub commits/pushes. Keep comments and
+documentation concise.
 
 Do not run billable evaluations/searches, deploy, promote candidates, provision,
 delete resources or change RBAC/networking without explicit approval. Discover
