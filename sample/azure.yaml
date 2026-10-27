@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+name: ai-genius-purchasing
+requiredVersions:
+  azd: ">=1.34.0"
+  extensions:
+    azure.ai.agents: ">=1.0.0-beta.13"
+    azure.ai.projects: ">=1.0.0-beta.8"
+    azure.ai.connections: ">=1.0.0-beta.9"  # Foundry Connections: the app-insights service
+infra:
+  provider: microsoft.foundry
+# infra/main.bicep is the generated Foundry template plus modules/monitoring.bicep
+# (Application Insights, evaluator access, the GitHub Actions identity).
+hooks:
+  # Asks once for the GitHub repository (main.bicep requires it); saved as GITHUB_REPOSITORY.
+  preprovision:
+    shell: sh
+    interactive: true
+    run: sh infra/preprovision.sh
+  # Creates the GitHub `demo` environment and its variables if `gh` is signed in.
+  # Re-run on its own: azd hooks run postprovision
+  postprovision:
+    shell: sh
+    run: sh infra/postprovision.sh
+services:
+  ai-project:
+    host: azure.ai.project
+    deployments:
+      - name: gpt-5.4-mini
+        model:
+          format: OpenAI
+          name: gpt-5.4-mini
+          version: "2026-03-17"
+        sku:
+          name: GlobalStandard
+          capacity: 400
+      - name: gpt-5.5
+        model:
+          format: OpenAI
+          name: gpt-5.5
+          version: "2026-04-24"
+        sku:
+          name: GlobalStandard
+          capacity: 300  # judges send long tool traces; 100 hit rate limits in CI
+      - name: text-embedding-3-small
+        model:
+          format: OpenAI
+          name: text-embedding-3-small
+          version: "1"
+        sku:
+          name: GlobalStandard
+          capacity: 50
+  # Project connection to the Application Insights that infra/main.bicep creates; hosting uses
+  # it for traces. Applied by azd after provisioning (outputs appInsightsId, appInsightsConnectionString).
+  app-insights:
+    host: azure.ai.connection
+    uses:
+      - ai-project
+    category: AppInsights
+    target: ${appInsightsId}
+    authType: ApiKey
+    credentials:
+      key: ${appInsightsConnectionString}
+    metadata:
+      ApiType: Azure
+      ResourceId: ${appInsightsId}
+  purchasing-advice-demo:
+    host: azure.ai.agent
+    project: ./agent
+    language: python
+    kind: hosted
+    name: purchasing-advice-demo
+    description: MAF purchasing advice agent with local policy search and optimizer configuration.
+    uses:
+      - ai-project
+    codeConfiguration:
+      runtime: python_3_13
+      entryPoint: main.py
+      dependencyResolution: remote_build
+    protocols:
+      - protocol: responses
+        version: 2.0.0
+    env:
+      AGENT_NAME: purchasing-advice-demo
+      OPTIMIZATION_LOCAL_DIR: .agent_configs
+    container:
+      resources:
+        cpu: "1"
+        memory: 2Gi
+    hooks:
+      # The agent's own identity exists only after deploy; grant it embedding access then.
+      # Inline, so azd never passes our folder path (which has spaces) to sh unquoted.
+      postdeploy:
+        shell: sh
+        run: sh ../infra/grant-agent-embeddings.sh

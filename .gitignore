@@ -1,0 +1,21 @@
+.DS_Store
+presentation/~$*.pptx
+sample/evaluation-summary.json
+
+# Local presentation drafts, review notes, execution vault, and evidence.
+/_local/
+
+# Local credentials, environments, and tool caches.
+**/.env
+**/.env.*
+!**/.env.example
+**/.azure/
+**/.venv/
+**/__pycache__/
+**/.ruff_cache/
+**/.pytest_cache/
+**/node_modules/
+
+# Presentation files belong in the ignored local workspace.
+*.pptx
+*.ppt

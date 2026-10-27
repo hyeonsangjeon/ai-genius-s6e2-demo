@@ -1,0 +1,76 @@
+{
+  "status": "completed",
+  "results_complete": true,
+  "provenance": {
+    "dataset_sha256": "20ddef012214e9695a4d1c38d1baae0353ef6af18c775a16083618778ff7dc57",
+    "judges": {
+      "next_action_success": {
+        "evaluator_name": "purchasing-next-action",
+        "definition_sha256": "4e517e035e979244c170044dce4f89c5b6e464c278bfe466dfc2aa9d0050ad8a",
+        "initialization_parameters": {
+          "deployment_name": "gpt-5.5",
+          "threshold": 1
+        },
+        "data_mapping": {
+          "query": "{{item.query}}",
+          "ground_truth": "{{item.ground_truth}}",
+          "response": "{{sample.output_text}}",
+          "tool_calls": "{{sample.tool_calls}}"
+        }
+      },
+      "purchasing_behaviour": {
+        "evaluator_name": "purchasing-demo-rubric",
+        "definition_sha256": "0648ae9c85566834c55d81085e17ae6918e78a4ae5dad2e079a789adee8f4f5a",
+        "initialization_parameters": {
+          "model": "gpt-5.5"
+        },
+        "data_mapping": {
+          "query": "{{item.query}}",
+          "response": "{{sample.output_text}}"
+        }
+      }
+    }
+  },
+  "evaluator_versions": {
+    "next_action_success": "1",
+    "purchasing_behaviour": "1"
+  },
+  "result_counts": {
+    "errored": 0,
+    "failed": 3,
+    "passed": 19,
+    "total": 22,
+    "skipped": 0
+  },
+  "criteria": [
+    {
+      "name": "next_action_success",
+      "mean_score": 0.8636363636363636,
+      "passed": 19,
+      "failed": 3,
+      "total": 22,
+      "unscored": 0
+    },
+    {
+      "name": "purchasing_behaviour",
+      "mean_score": 0.8333955092676022,
+      "passed": 21,
+      "failed": 1,
+      "total": 22,
+      "unscored": 0
+    }
+  ],
+  "source": {
+    "kind": "upstream_reference",
+    "repository": "https://github.com/graemefoster/FoundryEvalsAndObservability",
+    "commit": "8e0519fba7de6aa87d0ee186bd436b601f5220ef",
+    "path": "sample/evaluation/baselines/approvers-holdout.json",
+    "original_sha256": "41e9c656e1c7056bfd360876e70101f060a2a160fadb537906779f6f51ee211d",
+    "removed_fields": [
+      "eval_id",
+      "run_id",
+      "report_url"
+    ],
+    "measured_in_this_repository": false
+  }
+}
