@@ -1,4 +1,7 @@
 {
+  "agent_name": "purchasing-advice-demo-pr-40626421066",
+  "eval_id": "eval_07d1cdfd4c664726965d3f2c10d54b68",
+  "run_id": "evalrun_cd0dbffd6858434c92d65188e41001b3",
   "status": "completed",
   "results_complete": true,
   "provenance": {
@@ -35,42 +38,30 @@
     "next_action_success": "1",
     "purchasing_behaviour": "1"
   },
+  "report_url": "https://ai.azure.com/nextgen/r/S3xgpbDlRo6aLfDcssxg0Q,rg-s6e2-kr,,cog-ilb7crxwc6jt4,s6e2-kr/build/evaluations/eval_07d1cdfd4c664726965d3f2c10d54b68/run/evalrun_cd0dbffd6858434c92d65188e41001b3",
   "result_counts": {
     "errored": 0,
-    "failed": 4,
-    "passed": 30,
+    "failed": 2,
+    "passed": 32,
     "total": 34,
     "skipped": 0
   },
   "criteria": [
     {
       "name": "next_action_success",
-      "mean_score": 0.8823529411764706,
-      "passed": 30,
-      "failed": 4,
+      "mean_score": 0.9411764705882353,
+      "passed": 32,
+      "failed": 2,
       "total": 34,
       "unscored": 0
     },
     {
       "name": "purchasing_behaviour",
-      "mean_score": 0.8334623293862424,
-      "passed": 34,
-      "failed": 0,
+      "mean_score": 0.8267346082373888,
+      "passed": 33,
+      "failed": 1,
       "total": 34,
       "unscored": 0
     }
-  ],
-  "source": {
-    "kind": "upstream_reference",
-    "repository": "https://github.com/graemefoster/FoundryEvalsAndObservability",
-    "commit": "8e0519fba7de6aa87d0ee186bd436b601f5220ef",
-    "path": "sample/evaluation/baselines/approvers-development.json",
-    "original_sha256": "abc493762af24f7d0fd5e8016eb3c17a54c447123a9e4e93c760f1b737f2088f",
-    "removed_fields": [
-      "eval_id",
-      "run_id",
-      "report_url"
-    ],
-    "measured_in_this_repository": false
-  }
+  ]
 }
