@@ -1,48 +1,47 @@
 # AI Genius Season 6 Episode 2
 
-Hyeonsang Jeon's working repository for **AI 워크플로 품질 측정, 벤치마킹 및 개선**:
+Demo repository for Hyeonsang Jeon's session **AI 워크플로 품질 측정, 벤치마킹 및 개선**:
 model choice, organizational context, traces, evaluation, optimization, and CI/CD
 with Microsoft Foundry.
 
-This is an independent snapshot of Graeme Foster's sample, imported on 2026-10-27.
+This is an independent copy of Graeme Foster's sample, imported on 2026-10-27.
 See [UPSTREAM.md](UPSTREAM.md) for the original source and changes made during import.
+The documents shown at the end of the session are listed in [REFERENCES.md](REFERENCES.md).
 
 ## Current state
 
-Source preparation is in progress. This repository has **not yet been deployed or
-validated in Hyeonsang's Azure environment**. The included baseline scores are
-upstream reference results, not measurements from this repository.
+The agent runs in Hyeonsang's Microsoft Foundry project, and the six demos in the
+Korean session were recorded from this repository.
+
+- The baselines in `sample/evaluation/baselines/` were measured in this project on
+  2026-10-28 with the original agent: next action 32/34 on development, 18/22 on
+  holdout and 8/8 on drift.
+- The reviewed optimizer candidate, with the copied facts removed, went through the
+  PR gate and was merged in [#3](https://github.com/hyeonsangjeon/ai-genius-s6e2-demo/pull/3).
 
 The purchasing agent uses three read-only tools over fictional local data. They
 stand in for Foundry IQ, Work IQ, and Fabric IQ; they do not connect to those services.
 
-Cloud workflow jobs are disabled by default. They require the repository variable
-`ENABLE_CLOUD_DEMOS` to equal `true`, plus the Azure and GitHub configuration in the
-playbook. The variable is not enabled during repository setup.
+Cloud workflow jobs run only when the repository variable `ENABLE_CLOUD_DEMOS` is
+`true` and the Azure and GitHub configuration in the playbook is in place.
 
 ## Contents
 
 | Path | Purpose |
 | --- | --- |
 | `sample/agent/` | Purchasing advice agent, prompts, tools, and fictional data |
-| `sample/evaluation/` | Datasets, judges, optimizer configuration, comparison scripts, and reference baselines |
+| `sample/evaluation/` | Datasets, judges, optimizer configuration, comparison scripts, and measured baselines |
 | `sample/infra/` | Foundry infrastructure and setup hooks |
 | `.github/workflows/` | Offline PR checks and opt-in cloud evaluation/release workflows |
-| [PLAYBOOK.md](PLAYBOOK.md) | Demo sequence, prerequisites, known gaps, and later execution steps |
+| [PLAYBOOK.md](PLAYBOOK.md) | Demo sequence, prerequisites, and setup steps |
 
-Working slides, review notes, execution records, and original presentation assets
-are kept in the gitignored `_local/` folder on the preparation machine. They are
-not included in a clone of this repository.
+Slides, review notes and recordings stay in the gitignored `_local/` folder and are
+not part of a clone.
 
-## Start with review
+## Getting started
 
 Read the playbook before running commands. Python 3.13 and the checked-in dependency
-locks are required. Deployment, model calls, evaluation, and optimization have not
-been resumed; importing the source does not configure Azure.
-
-Known preparation gaps include a separate model/cost comparison, an initial prompt
-state for the improvement PR demo, and verification of the agent's hybrid search
-and trace in the target environment. See the playbook for the acceptance criteria.
+locks are required, and cloning the repository does not configure Azure.
 
 - [Hyeonsang's Korean session](https://developer.microsoft.com/en-us/reactor/events/27625/)
 - [Graeme's English session](https://reactor.microsoft.com/en-us/reactor/events/27640/)

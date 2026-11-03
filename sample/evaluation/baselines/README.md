@@ -1,15 +1,18 @@
-# Upstream reference baselines
+# Baselines
 
-These three reports were imported from Graeme Foster's sample at revision
-`8e0519fba7de6aa87d0ee186bd436b601f5220ef`. They are not results measured in
-Hyeonsang's environment.
+These three reports were measured in Hyeonsang's Microsoft Foundry project on
+2026-10-28 by running the original purchasing agent (commit `6a42068`). They replace
+the reference reports imported from Graeme Foster's sample.
 
-Evaluation IDs, run IDs, and portal report URLs were removed for the independent
-import. Scores, row counts, evaluator versions, dataset hashes, and judge provenance
-were preserved. Each report's `source` field records its origin, original file hash,
-and removed fields.
+| Set | Next action | Behaviour |
+| --- | --- | --- |
+| Development | 32/34 | 0.827 |
+| Holdout | 18/22 | 0.832 |
+| Drift | 8/8 | 0.860 |
 
-Use the reports only as attributed reference thresholds until the new environment
-has been evaluated. If questions, references, judges, or scoring conditions change,
-measure and explicitly review a replacement baseline. Never attach new input hashes
-to old scores.
+Each report keeps its evaluation and run IDs, evaluator versions, dataset hash and
+judge provenance. CI compares a candidate with these reports only when the dataset,
+judges and scoring conditions match.
+
+If questions, references, judges, or scoring conditions change, measure and explicitly
+review a replacement baseline. Never attach new input hashes to old scores.

@@ -4,24 +4,18 @@ Public, independent repository: `hyeonsangjeon/ai-genius-s6e2-demo`.
 The purchasing-agent sample and six-demo flow come from Graeme Foster; see [UPSTREAM.md](UPSTREAM.md).
 `sample/demo-commands.sh` is a command reference, not a script to execute end to end.
 
-## Current preparation state
+## Current state
 
-This preparation repository has not been deployed or evaluated in its own environment.
-Deployment, live demos, evaluations and optimisation are paused while the presentation and
-local review notes are prepared. An import or offline check does not establish demo readiness.
+The agent runs in Hyeonsang's Microsoft Foundry project, and the six demos in the Korean
+session were recorded from this repository.
 
 - Source presentation references, including the original deck, are in ignored
   `_local/references/graeme-source/presentation/`; working PPT copies are in `_local/ppt/`.
-- `sample/evaluation/candidates/reviewed/` and `sample/agent/.agent_configs/baseline/` currently
-  have identical instructions, metadata and tools. Copying that candidate over the baseline
-  is not a new improvement and cannot demonstrate a before/after gain.
-- Committed baselines are upstream reference scores, not results from this environment.
-  Their evaluation/run IDs and private portal links were removed; `source` metadata records
-  their origin. Scores, dataset hashes and judge provenance retain their source meaning.
-- Model comparison and a measured quality/latency/token/cost comparison still need preparation.
-  Selecting a model and displaying evaluation scores do not supply those comparisons.
-- Repository Actions are disabled. Cloud jobs also require repository variable
-  `ENABLE_CLOUD_DEMOS` to equal `true`; leave it unset or false until execution resumes.
+- The committed baselines were measured in this project on 2026-10-28 with the original agent:
+  next action 32/34 on development, 18/22 on holdout and 8/8 on drift.
+- The reviewed optimizer candidate, with the copied facts removed, went through the PR gate
+  and was merged in [#3](https://github.com/hyeonsangjeon/ai-genius-s6e2-demo/pull/3).
+- Cloud jobs run only when repository variable `ENABLE_CLOUD_DEMOS` is `true`.
 
 ## The agent
 
@@ -219,8 +213,8 @@ evaluate a dataset and compare with a baseline. These are configured roles, not 
 | `purchasing-advice-demo-release` | Release after holdout, review, drift and release approval |
 
 The repository-level `ENABLE_CLOUD_DEMOS == 'true'` condition protects promotion `target` and
-`release`, PR `development`, and reusable `evaluate`. Keep it unset or false while paused.
-Actions are also disabled for now. Re-enabling Actions alone does not opt in to cloud jobs.
+`release`, PR `development`, and reusable `evaluate`. Set it to false to pause cloud jobs.
+Enabling Actions alone does not opt in to cloud jobs.
 With Actions enabled, offline PR lint, formatting, request and prompt-fact checks can run
 without Azure. Do not enable the flag or dispatch a workflow as a side effect of a source push.
 
@@ -239,7 +233,7 @@ These are diagnostic pointers, not permission to change deployment, quota or rol
 | Policy search reports `keyword` | `fallback_reason`, embedding freshness, identity access and role propagation; do not claim hybrid search |
 | OIDC federation mismatch | Compare the subject and saved repository binding with `hyeonsangjeon/ai-genius-s6e2-demo` |
 | Missing repository parameter or GitHub variables | Selected azd environment and pre/postprovision results; verify the target before rerunning a hook |
-| Cloud jobs skipped | Actions disabled or `ENABLE_CLOUD_DEMOS` unset/false; intentional while paused |
+| Cloud jobs skipped | Actions disabled or `ENABLE_CLOUD_DEMOS` unset/false |
 | Workflow waits | Agent concurrency lock or production review |
 | Missing/mismatched baseline provenance | Fresh measurements from a known configuration, followed by review |
 | Registered judge differs from local JSON | Review the definition change, then explicitly register and refresh affected baselines |
