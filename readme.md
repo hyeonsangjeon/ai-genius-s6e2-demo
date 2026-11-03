@@ -46,3 +46,4 @@ and trace in the target environment. See the playbook for the acceptance criteri
 
 - [Hyeonsang's Korean session](https://developer.microsoft.com/en-us/reactor/events/27625/)
 - [Graeme's English session](https://reactor.microsoft.com/en-us/reactor/events/27640/)
+- [Further reading from the session (참고 문서)](REFERENCES.md)
