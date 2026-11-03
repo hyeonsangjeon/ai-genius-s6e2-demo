@@ -4,24 +4,18 @@ Public, independent repository: `hyeonsangjeon/ai-genius-s6e2-demo`.
 The purchasing-agent sample and six-demo flow come from Graeme Foster; see [UPSTREAM.md](UPSTREAM.md).
 `sample/demo-commands.sh` is a command reference, not a script to execute end to end.
 
-## Current preparation state
+## Current state
 
-This preparation repository has not been deployed or evaluated in its own environment.
-Deployment, live demos, evaluations and optimisation are paused while the presentation and
-local review notes are prepared. An import or offline check does not establish demo readiness.
+The agent runs in Hyeonsang's Microsoft Foundry project, and the six demos in the Korean
+session were recorded from this repository.
 
 - Source presentation references, including the original deck, are in ignored
   `_local/references/graeme-source/presentation/`; working PPT copies are in `_local/ppt/`.
-- `sample/evaluation/candidates/reviewed/` and `sample/agent/.agent_configs/baseline/` currently
-  have identical instructions, metadata and tools. Copying that candidate over the baseline
-  is not a new improvement and cannot demonstrate a before/after gain.
-- Committed baselines are upstream reference scores, not results from this environment.
-  Their evaluation/run IDs and private portal links were removed; `source` metadata records
-  their origin. Scores, dataset hashes and judge provenance retain their source meaning.
-- Model comparison and a measured quality/latency/token/cost comparison still need preparation.
-  Selecting a model and displaying evaluation scores do not supply those comparisons.
-- Repository Actions are disabled. Cloud jobs also require repository variable
-  `ENABLE_CLOUD_DEMOS` to equal `true`; leave it unset or false until execution resumes.
+- The committed baselines were measured in this project on 2026-10-28 with the original agent:
+  next action 32/34 on development, 18/22 on holdout and 8/8 on drift.
+- The reviewed optimizer candidate, with the copied facts removed, went through the PR gate
+  and was merged in [#3](https://github.com/hyeonsangjeon/ai-genius-s6e2-demo/pull/3).
+- Cloud jobs run only when repository variable `ENABLE_CLOUD_DEMOS` is `true`.
 
 ## The agent
 
