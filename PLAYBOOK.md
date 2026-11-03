@@ -213,8 +213,8 @@ evaluate a dataset and compare with a baseline. These are configured roles, not 
 | `purchasing-advice-demo-release` | Release after holdout, review, drift and release approval |
 
 The repository-level `ENABLE_CLOUD_DEMOS == 'true'` condition protects promotion `target` and
-`release`, PR `development`, and reusable `evaluate`. Keep it unset or false while paused.
-Actions are also disabled for now. Re-enabling Actions alone does not opt in to cloud jobs.
+`release`, PR `development`, and reusable `evaluate`. Set it to false to pause cloud jobs.
+Enabling Actions alone does not opt in to cloud jobs.
 With Actions enabled, offline PR lint, formatting, request and prompt-fact checks can run
 without Azure. Do not enable the flag or dispatch a workflow as a side effect of a source push.
 
@@ -233,7 +233,7 @@ These are diagnostic pointers, not permission to change deployment, quota or rol
 | Policy search reports `keyword` | `fallback_reason`, embedding freshness, identity access and role propagation; do not claim hybrid search |
 | OIDC federation mismatch | Compare the subject and saved repository binding with `hyeonsangjeon/ai-genius-s6e2-demo` |
 | Missing repository parameter or GitHub variables | Selected azd environment and pre/postprovision results; verify the target before rerunning a hook |
-| Cloud jobs skipped | Actions disabled or `ENABLE_CLOUD_DEMOS` unset/false; intentional while paused |
+| Cloud jobs skipped | Actions disabled or `ENABLE_CLOUD_DEMOS` unset/false |
 | Workflow waits | Agent concurrency lock or production review |
 | Missing/mismatched baseline provenance | Fresh measurements from a known configuration, followed by review |
 | Registered judge differs from local JSON | Review the definition change, then explicitly register and refresh affected baselines |
