@@ -22,7 +22,9 @@ preserved by this attribution. This is an independent repository, not a GitHub f
   ignored local reference folder. They are outside this source repository.
 - Removed upstream evaluation/run IDs and private portal report links from the
   three reference baseline files. Scores, dataset hashes, and judge provenance
-  remain unchanged; each file records its original source and removed fields.
+  were kept unchanged, and each file recorded its original source and removed
+  fields. These reference files were replaced on 2026-10-28; see Baseline
+  attribution.
 - Added default-off repository-variable gates to cloud workflow jobs.
 - Updated repository guidance and excluded local drafts, credentials, and caches.
 
@@ -31,10 +33,13 @@ configuration, and dependency locks were not changed during the import.
 
 ## Baseline attribution
 
-The files under `sample/evaluation/baselines/` contain upstream reference scores.
-They do not demonstrate a deployment or evaluation in this repository's environment.
-Keep their `source` metadata when copying them. Changes to datasets or judges require
-new baseline measurements, not new hashes attached to old scores.
+The files under `sample/evaluation/baselines/` were measured in this repository's
+own Foundry project on 2026-10-28 (runs of commit `452914f`, recorded in `6a42068`).
+They replaced the upstream reference scores imported on 2026-10-27; see
+`sample/evaluation/baselines/README.md`. The datasets and judges are still the
+upstream ones, so the dataset hashes and judge provenance match the imported files.
+Changes to datasets or judges require new baseline measurements, not new hashes
+attached to old scores.
 
 ## Reuse and updates
 

@@ -85,12 +85,13 @@ verify that value rather than assuming a remote change updates it. These hooks a
 of repository creation or push. After an authorised deployment, inspect the actual Demo 2
 trace before claiming hybrid search or successful tool calls.
 
-## Baselines after execution resumes
+## Refreshing baselines
 
 Each gate compares a dataset with a committed baseline. A person reviews and replaces that
-baseline; the pipeline never moves its own bar. The imported scores are upstream references.
-Preserve their `source` metadata, and establish a measured baseline for the selected environment
-before using the gates for release. Changed questions, references or judges require fresh
+baseline; the pipeline never moves its own bar. The committed baselines were measured in this
+project on 2026-10-28; see `sample/evaluation/baselines/README.md`. Before using the gates for
+release in another environment, measure its own baselines and remove `report_url` before
+committing them. Changed questions, references or judges require fresh
 measurements; never attach new fingerprints to old scores.
 
 Once cloud execution is separately authorised, configured and explicitly enabled, these
