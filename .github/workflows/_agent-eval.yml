@@ -38,6 +38,21 @@ on:
         description: Save this run as the baseline artifact instead of comparing.
         type: boolean
         default: false
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_ENV_NAME:
+        required: true
+      AZURE_LOCATION:
+        required: true
+      AZURE_AI_PROJECT_ID:
+        required: true
+      FOUNDRY_PROJECT_ENDPOINT:
+        required: true
 
 permissions:
   contents: read
@@ -59,13 +74,13 @@ jobs:
         working-directory: sample
     env:
       AGENT_NAME: ${{ inputs.agent_name }}
-      AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
-      AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
-      AZURE_AI_PROJECT_ID: ${{ vars.AZURE_AI_PROJECT_ID }}
-      FOUNDRY_PROJECT_ENDPOINT: ${{ vars.FOUNDRY_PROJECT_ENDPOINT }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
+      AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}
+      AZURE_AI_PROJECT_ID: ${{ secrets.AZURE_AI_PROJECT_ID }}
+      FOUNDRY_PROJECT_ENDPOINT: ${{ secrets.FOUNDRY_PROJECT_ENDPOINT }}
       DATASET_STEM: ${{ inputs.dataset }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -112,7 +127,7 @@ jobs:
           for key in AZURE_CLIENT_ID AZURE_TENANT_ID AZURE_SUBSCRIPTION_ID \
             AZURE_ENV_NAME AZURE_LOCATION AZURE_AI_PROJECT_ID FOUNDRY_PROJECT_ENDPOINT; do
             if [ -z "$(printenv "$key")" ]; then
-              echo "::error::Missing GitHub variable: $key"
+              echo "::error::Missing demo environment secret: $key"
               exit 1
             fi
           done
@@ -161,18 +176,27 @@ jobs:
           # The pinned extension validates the name before expanding environment variables.
           yq -i '.services.purchasing-advice-demo.name = strenv(AGENT_NAME) |
             .services.purchasing-advice-demo.env.AGENT_NAME = strenv(AGENT_NAME)' azure.yaml
-          azd deploy purchasing-advice-demo --no-prompt
+          # The CLI can emit portal URLs that encode cloud identifiers.
+          azd deploy purchasing-advice-demo --no-prompt >/dev/null 2>&1 || {
+            status=$?
+            echo "::error::azd deploy failed (exit $status). Check the deployment in Foundry."
+            exit "$status"
+          }
       - name: Verify evaluation target
         if: inputs.deploy_agent
         run: |
-          azd ai agent show purchasing-advice-demo --output json | python3 -c '
+          target_json="$(azd ai agent show purchasing-advice-demo --output json 2>/dev/null)" || {
+            status=$?
+            echo "::error::azd agent lookup failed (exit $status)."
+            exit "$status"
+          }
+          printf '%s\n' "$target_json" | python3 -c '
           import json, os, sys
           actual = json.load(sys.stdin)["name"]
-          expected = os.environ["AGENT_NAME"]
-          if actual != expected:
-              raise SystemExit(f"Agent name mismatch: deployed {actual}, expected {expected}")
-          print(f"Verified evaluation target: {actual}")
+          if actual != os.environ["AGENT_NAME"]:
+              raise SystemExit("The deployed agent name does not match the configured target.")
           '
+          echo "Verified evaluation target."
       - name: Run ${{ inputs.dataset }}
         env:
           EVAL_DATASET: evaluation/datasets/${{ inputs.dataset }}.jsonl
@@ -183,10 +207,15 @@ jobs:
             args+=(--baseline "$BASELINE_PATH")
           fi
           if [ "${{ inputs.detail }}" = "counts" ]; then
-            # Keep per-question detail and the report link out of the logs for the drift set.
-            .venv/bin/python evaluation/evaluate.py "${args[@]}" > eval.log
+            # Keep evaluator output in the runner workspace for the drift set.
+            .venv/bin/python evaluation/evaluate.py "${args[@]}" > eval.log 2>&1 || {
+              status=$?
+              echo "::error::Evaluation failed (exit $status)."
+              exit "$status"
+            }
           else
-            .venv/bin/python evaluation/evaluate.py "${args[@]}"
+            .venv/bin/python evaluation/evaluate.py "${args[@]}" 2>&1 |
+              sed -E 's~https?://[^[:space:]"<>]+~[URL removed]~gI'
           fi
       - name: Save as baseline
         if: steps.base.outputs.save == 'true'

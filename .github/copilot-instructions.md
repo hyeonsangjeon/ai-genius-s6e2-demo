@@ -137,8 +137,8 @@ deployment uses `azd deploy purchasing-advice-demo`, not `azd up`.
 
 Bind GitHub commands explicitly with `--repo hyeonsangjeon/ai-genius-s6e2-demo`. Before later
 provisioning, verify the selected azd environment's `GITHUB_REPOSITORY`: preprovision reuses
-its saved value before considering origin. Postprovision writes GitHub environments/variables;
-postdeploy grants embedding access. These hooks are not part of clone, cleanup or push and
+its saved value before considering origin. Postprovision configures GitHub environments and
+demo secrets. Postdeploy grants embedding access. These hooks are not part of clone, cleanup or push and
 must remain unexecuted while cloud work is paused.
 
 Use Python 3.13 and the existing locked dependencies (`requirements*.txt`,

@@ -79,8 +79,8 @@ python evaluation/evaluate.py --register-only
 ```
 
 `azd up` provisions the project, models, monitoring, agent and GitHub identity. Its hooks also
-write GitHub `demo`/`production` environments and variables, and grant the deployed agent
-embedding access. Preprovision reuses a saved `GITHUB_REPOSITORY` before considering origin:
+configure the GitHub `demo` environment secrets and `production` review gate, and grant the
+deployed agent embedding access. Preprovision reuses a saved `GITHUB_REPOSITORY` before considering origin:
 verify that value rather than assuming a remote change updates it. These hooks are not part
 of repository creation or push. After an authorised deployment, inspect the actual Demo 2
 trace before claiming hybrid search or successful tool calls.
@@ -233,7 +233,7 @@ These are diagnostic pointers, not permission to change deployment, quota or rol
 | --- | --- |
 | Policy search reports `keyword` | `fallback_reason`, embedding freshness, identity access and role propagation; do not claim hybrid search |
 | OIDC federation mismatch | Compare the subject and saved repository binding with `hyeonsangjeon/ai-genius-s6e2-demo` |
-| Missing repository parameter or GitHub variables | Selected azd environment and pre/postprovision results; verify the target before rerunning a hook |
+| Missing repository parameter or demo environment secrets | Selected azd environment and pre/postprovision results; verify the target before rerunning a hook |
 | Cloud jobs skipped | Actions disabled or `ENABLE_CLOUD_DEMOS` unset/false |
 | Workflow waits | Agent concurrency lock or production review |
 | Missing/mismatched baseline provenance | Fresh measurements from a known configuration, followed by review |

@@ -137,7 +137,7 @@ def create_dataset(path: Path) -> tuple[list[dict], dict]:
 
 
 def run_evaluation(project, evaluation: dict, rows: list, data_source: dict, args) -> None:
-    """Start the billable run. Submission is not completion: follow the report in Foundry."""
+    """Start the billable run and wait for its results if requested."""
     if args.baseline:
         check_baseline(args.baseline, rows, evaluation)
     if project is None:
@@ -150,9 +150,7 @@ def run_evaluation(project, evaluation: dict, rows: list, data_source: dict, arg
         )
         print(f"Run ID: {run.id}", flush=True)
         print(f"Status: {run.status}")
-        if run.report_url:
-            print(f"Report: {run.report_url}")
-        print("View progress, answers and scores in Foundry Evaluations.")
+        print("Use the run ID above to locate this run in your project's Foundry Evaluations.")
         if args.wait:
             wait_for_evaluation(
                 client,
