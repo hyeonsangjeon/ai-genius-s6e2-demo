@@ -6,7 +6,8 @@ Read `PLAYBOOK.md` before changing this repository. It is the single source for
 the planned presentation flow, reusable setup and commands. This is the public independent
 `hyeonsangjeon/ai-genius-s6e2-demo` repository; read `UPSTREAM.md` for source attribution.
 Keep new run history, raw scores, cloud resource IDs and machine-specific handoffs in ignored
-local storage. Committed baselines are attributed upstream references, not local measurements.
+local storage. Committed baselines were measured in this project on 2026-10-28; see
+`sample/evaluation/baselines/README.md`.
 These instructions guide coding assistants; the hosted agent's instructions
 are in `sample/agent/.agent_configs/baseline/instructions.md`.
 
@@ -49,8 +50,8 @@ Repository cleanup, documentation or push does not authorise those actions.
 
 - Baseline and `evaluation/candidates/reviewed/` currently have identical instructions,
   metadata and tools. Do not present that pair as an improvement or invent a score gain.
-- Baseline `source` metadata identifies upstream measurements; evaluation/run IDs and
-  private portal links were removed. Preserve provenance when copying or replacing them.
+- Baselines keep this project's evaluation and run IDs but not the Foundry portal links
+  (`report_url`). Preserve provenance when copying or replacing them.
   New fingerprints cannot turn old scores into new measurements.
 - Model comparison and measured quality/latency/token/cost comparison remain preparation
   gaps. Trace timings and tokens do not establish quality or total platform cost.
@@ -136,8 +137,8 @@ deployment uses `azd deploy purchasing-advice-demo`, not `azd up`.
 
 Bind GitHub commands explicitly with `--repo hyeonsangjeon/ai-genius-s6e2-demo`. Before later
 provisioning, verify the selected azd environment's `GITHUB_REPOSITORY`: preprovision reuses
-its saved value before considering origin. Postprovision writes GitHub environments/variables;
-postdeploy grants embedding access. These hooks are not part of clone, cleanup or push and
+its saved value before considering origin. Postprovision configures GitHub environments and
+demo secrets. Postdeploy grants embedding access. These hooks are not part of clone, cleanup or push and
 must remain unexecuted while cloud work is paused.
 
 Use Python 3.13 and the existing locked dependencies (`requirements*.txt`,

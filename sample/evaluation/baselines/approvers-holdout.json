@@ -38,7 +38,6 @@
     "next_action_success": "1",
     "purchasing_behaviour": "1"
   },
-  "report_url": "https://ai.azure.com/nextgen/r/S3xgpbDlRo6aLfDcssxg0Q,rg-s6e2-kr,,cog-ilb7crxwc6jt4,s6e2-kr/build/evaluations/eval_145b3b59a1f1444fa709fb60a0a739cd/run/evalrun_e81c53a91e494d38a55970de5a4e9edd",
   "result_counts": {
     "errored": 0,
     "failed": 4,

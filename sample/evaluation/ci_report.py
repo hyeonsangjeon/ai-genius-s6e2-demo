@@ -107,7 +107,6 @@ def wait_for_evaluation(
         run = client.evals.runs.retrieve(run_id, eval_id=eval_id)
 
     report["status"] = run.status
-    report["report_url"] = run.report_url
     report["result_counts"] = run.result_counts.model_dump()
     if report_path:
         report_path.write_text(json.dumps(report, indent=2) + "\n")
